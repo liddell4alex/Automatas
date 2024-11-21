@@ -8,12 +8,13 @@
 caso se indicará el número total de estados como argumento*/
 int main(int argc, char* argv[])
 {
-    int numQ;
+    int numQ;	// Para almacenar la cantidad de estados totales
+
     if(argc > 1) {
         numQ = std::stoi(argv[1]);
     }
     else {
-        std::cout << "Es necesario indicar la cantidad de estados totales: ";
+        std::cout << "Es necesario indicar la cantidad de estados totales\n>>> ";
 	std::cin >> numQ;
     }
 
@@ -21,17 +22,25 @@ int main(int argc, char* argv[])
     std::vector<std::string> Q;     // Almaceno los estados
     std::string Qi;                 // Almaceno el estado inicial
     std::vector<std::string> F;     // Almaceno los estados finales
+    
+    // Creando estados usando la cantidad de estados proporcionada
+    for(int i = 0; i < numQ; i++) {
+        Q.push_back(nombreDeEstado(i));
+    }
+
+    std::cout << "\n----------\n"
+	      << "Estados totales del automata: ";
+
+    for(long unsigned int i = 0; i < Q.size(); i++) {
+        std::cout << Q[i] << ' ';
+    }
+    std::cout << "\n----------\n\n";
 
     // Almacenando digitos del alfabeto
     std::cout << "Digitos del alfabeto separados por un espacio (';' para terminar las entradas)\n>>> ";
     char d;
     while(std::cin >> d && d != ';') {
         E.push_back(d);
-    }
-
-    // Creando estados usando la cantidad de estados proporcionada
-    for(int i = 0; i < numQ; i++) {
-        Q.push_back(nombreDeEstado(i));
     }
 
     // Almacenando el estado inicial
