@@ -1,3 +1,6 @@
+// Tocomp windows:
+// g++ -Wall -ID:\Estudios\Proyectos\Automatas\include\ main.cpp D:\Estudios\Proyectos\Automatas\src\transitions.c D:\Estudios\Proyectos\Automatas\src\utilities.c -o D:\Estudios\Proyectos\Automatas\bin\automatas
+
 #include <iostream>
 #include <vector>
 
