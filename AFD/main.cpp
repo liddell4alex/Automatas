@@ -1,12 +1,13 @@
 #include <iostream>
 #include <array>
 #include <string>
-#include <sstream>
+#include <algorithm>
 
 int main(int argc, char *argv[])
 {
     // Alfabeto
     std::array<int, 2> E = {0,1};
+    E = {0, 1};
 
     // Estados
     std::array<std::string, 2> Q = {"q0", "q1"};
@@ -23,13 +24,35 @@ int main(int argc, char *argv[])
         {{"q0", "q0"}}
     }};
 
-    std::string palabra = "0101";
+    // Comprobando palabras --------------------------------------------
+    std::string Qa = Qi;
+    std::string word = "1010";
 
-    // Seguimos luego
+    if (!(word.length() < 1)) {
+        for (const char c : word) {
+            int row = (int)Qa[1] - '0';
+            int col = (int)c - '0';
+            
+            if (AFD[row][col] != "V") {
+                Qa = AFD[row][col];
+            } else {
+                Qa = "V";
+                break;
+            }
+        }
+        
+        bool find = std::binary_search(F.begin(), F.end(), Qa);
+        
+        if (find) {
+            std::cout << "SI" << '\n';
+        } else {
+            std::cout << "NO" << '\n';
+        }
+    } else {
+        std::cout << "NO" << '\n';
+    }
 
-
-
-
+    std::getchar();
 
     return 0;
 }
