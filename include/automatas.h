@@ -1,14 +1,8 @@
-#ifdef AUTOMATAS
-#define AUTOMATAS
+// automatas.h
+#ifndef AUTOMATAS_H
+#define AUTOMATAS_H
 
-#include <string>
+void afd();
+void afnd();
 
-/* Estructuras para armar la tabla de transiciones */
-typedef struct Transitions Transitions;
-typedef struct States States;
-
-/* Funcion simple para ponerle nombre a los estados en
-formato q# dependiendo de la cantidad de estados dada */
-std::string nombreDeEstado(int);
-
-#endif // AUTOMATAS
+#endif // AUTOMATAS_H
