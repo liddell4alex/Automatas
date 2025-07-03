@@ -7,10 +7,11 @@
 #include <thread>
 #include <sstream>
 #include <stdlib.h>
+#include "colores.h"
 
 int afd()
 {
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 3; i++) {
         std::cout << "Hola, iniciando AFD.";
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         
@@ -54,7 +55,7 @@ int afd()
     std::vector<std::string> row;
     std::vector<std::vector<std::string>> AFD;
   
-    std::cout << "\nDefine la tabla de transiciones (solo #'s por fila y termina con x)\n";
+    std::cout << "\nDefine la tabla de transiciones (solo #'s por fila y termina con 'x')\n";
     while (1) {
         std::cout << ">>> ";
         
@@ -83,7 +84,7 @@ int afd()
     std::string final;
     std::vector<std::string> F;
 
-    std::cout << "\nSelecciona los estados finales (solo #'s y termina con x)\n[ ";
+    std::cout << "\nSelecciona los estados finales (solo #'s y termina con 'x')\n[ ";
     for (const std::string &e : Q) {
         std::cout << e << ' ';
     }
@@ -113,7 +114,7 @@ int afd()
     while (1) {
         Qa = Qi;
 
-        std::cout << "Introduce la palabra a probar\n>>> ";
+        std::cout << "\nIntroduce la palabra a probar ('q' para terminar)\n>>> ";
         std::getline(std::cin, word);
 
         if (word == "q") { std::cout << "Bye :D"; getchar(); break; }
@@ -138,9 +139,9 @@ int afd()
         flag = std::binary_search(F.begin(), F.end(), Qa);
         
         if (flag) {
-            std::cout << "SI" << '\n';
+            std::cout << GREEN << "SI" << RESET << '\n';
         } else {
-            std::cout << "NO" << '\n';
+            std::cout << RED << "NO" << RESET << '\n';
         }
     }
  

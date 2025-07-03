@@ -5,8 +5,10 @@
 #include <locale>
 #include <vector>
 #include <stdlib.h>
-#include <automatas.h>
 #include <limits>
+
+#include "automatas.h"
+#include "colores.h"
 
 int main(int argc, char* argv[])
 { setlocale(LC_ALL, "es_MX.UTF-8");
@@ -15,11 +17,11 @@ int main(int argc, char* argv[])
     while (1) {
         system("cls");
         
-        std::cout << "Seleccione una opción: \n"
-                  << "1. AFD\n"
-                  << "2. AFND\n"
-                  << "3. Salir\n"
-                  << ">>> ";
+        std::cout << LBLUE << "Seleccione una opción: \n" << RESET
+                  << GREEN << "1. AFD\n" << RESET
+                  << RED << "2. AFND\n" << RESET
+                  << ORANGE << "3. Salir\n\n" << RESET
+                  << WHITE << ">>> " << RESET;
         std::cin >> op;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         
@@ -30,14 +32,15 @@ int main(int argc, char* argv[])
                 afd();
                 break;
             case 2:
-                std::cout << "En construcción.";
+                std::cout << ORANGE << "\nEn construcción." << RESET;
                 getchar();
                 break;
             case 3:
-                std::cout << "Bye :D";
+                std::cout << YELLOW << "\nBye :D" << RESET;
+                getchar();
                 return 0;
             default:
-                std::cout << "Error.";
+                std::cout << RED << "\nError." << RESET;
                 getchar();
                 break;
         }
