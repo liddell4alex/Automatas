@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
     int op;
 
     while (1) {
-        system("cls");
+        system("clear");
         
         std::cout << LBLUE << "Seleccione una opción: \n" << RESET
                   << GREEN << "1. AFD\n" << RESET
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
         switch (op)
         {
             case 1:
-                system("cls");
+                system("clear");
                 afd();
                 break;
             case 2:
@@ -36,8 +36,7 @@ int main(int argc, char* argv[])
                 getchar();
                 break;
             case 3:
-                std::cout << YELLOW << "\nBye :D" << RESET;
-                getchar();
+                std::cout << YELLOW << "Bye :D\n" << RESET;
                 return 0;
             default:
                 std::cout << RED << "\nError." << RESET;

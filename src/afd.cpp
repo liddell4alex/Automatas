@@ -11,19 +11,6 @@
 
 int afd()
 {
-    for (int i = 0; i < 3; i++) {
-        std::cout << "Hola, iniciando AFD.";
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        
-        system("cls");
-        std::cout << "Hola, iniciando AFD..";
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-   
-        system("cls");
-        std::cout << "Hola, iniciando AFD...";
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        system("cls");
-    }
     
     // Estados generados automaticamente -----------------------------------------------
     int numEstados = 0;
