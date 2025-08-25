@@ -1,118 +1,149 @@
 #include <iostream>
 #include <vector>
-#include <string>
+#include <iterator>
 #include <limits>
 #include <algorithm>
 #include <chrono>
 #include <thread>
 #include <sstream>
 #include <stdlib.h>
+#include <fstream>
+#include <string>
+
 #include "colores.h"
+#define luint64 long unsigned int
 
 int afd()
-{
+{   
+    std::string line;
+    std::ifstream file("./test/afd_test001");
     
-    // Estados generados automaticamente -----------------------------------------------
-    int numEstados = 0;
-    std::string estado;
-    std::vector<std::string> Q;
+    // Q (States) -----------------------------------------------
+    std::string num_states;
+    std::string state;
+    std::vector<std::string> Q; // Store states
     
-    std::cout << "Número de estados\n>>> ";
-    std::cin >> numEstados;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::getline(file, num_states);
     
-    for (int i = 0; i < numEstados; i++) {
-        estado = "q" + std::to_string(i);
-        Q.push_back(estado);
+    for( int i = 0; i < std::stoi(num_states); i++ ) {
+        state = "q" + std::to_string(i);
+        Q.push_back(state);
     }
-    
-    // Alfabeto, por ahora, solo es: Σ = {0, 1} ----------------------------------------
+
+    std::cout << GREEN << "[States]\n" << RESET;
+    for( luint64 i = 0; i < Q.size(); i++ ) { std::cout << Q[i] << ' '; }
+    std::cout << '\n';
+
+
+    // Σ (Alphabet) ----------------------------------------
     char c;
-    std::string alf;
+    std::string alph;
     std::vector<char> E;
 
-    std::cout << "\nEspecifica el alfabeto (carácteres separados por espacios)\n>>> ";
-    std::getline(std::cin, alf);
+    std::getline(file, alph);
 
-    std::istringstream stream(alf);
-    while (stream >> c) { E.push_back(c); }
+    std::istringstream chars(alph);
+    while ( chars >> c ) { E.push_back(c); }
 
-    // Creando tabla de transiciones ---------------------------------------------------
-    std::string line;
+    std::cout << GREEN << "\n[Alphabet]\n" << RESET;
+    for( luint64 i = 0; i < E.size(); i++ ) { std::cout << E[i] << ' '; }
+    std::cout << '\n';
+    
+
+    // δ (Transition table) ---------------------------------------------------
+    std::string t;
+    std::string row_elements;
     std::vector<std::string> row;
     std::vector<std::vector<std::string>> AFD;
   
-    std::cout << "\nDefine la tabla de transiciones (solo #'s por fila y termina con 'x')\n";
-    while (1) {
-        std::cout << ">>> ";
-        
-        std::getline(std::cin, line);
+    for(luint64 i = 0; i < Q.size(); i++) {
 
-        if (line == "x") { break; }
-        
-        std::istringstream stream(line);
+        std::getline(file, row_elements);
+         
+        std::istringstream line(row_elements);
 
-        while (stream >> estado) {
-            row.push_back(Q[std::stoi(estado)]);
+        while( line >> t ) {
+            row.push_back(Q[std::stoi(t)]);
         }
         
         AFD.push_back(row);
         row.clear();     
     }
+
+    std::cout << GREEN << "\n[Transition table]\n" << RESET;
+
+    std::cout << "   | ";
     
-    // Estado Inicial -------------------------------------------------------------------
-    int n;
+    for( luint64 i = 0; i < E.size(); i++ ) {
+        std::cout << E[i] << "  ";
+    } std::cout << '\n';
+   
+    std::cout << "---+"; 
+    for( luint64 i = 0; i < E.size(); i++ ) {
+        std::cout  << "---";
+    } std::cout << '\n';
+
+    for( luint64 i = 0; i < AFD.size(); i++ ) {
+        std::cout << Q[i] << " | ";
+        for( const std::string &s : AFD[i] ) {
+            std::cout << s << ' ';
+        }
+        std::cout << '\n';
+    }
+    
+    // Qi (Initial state) -------------------------------------------------------------------
+    std::string n;
     std::string Qi;
 
-    std::cout << "\nEstado inicial (solo #)\n>>> ";
-    std::cin >> n; Qi = Q[n];
+    std::getline(file, n);
+    Qi = Q[std::stoi(n)];
     
-    // Estados Finales ------------------------------------------------------------------
-    std::string final;
+    std::cout << GREEN << "\n[Initial state]\n" << RESET;
+    std::cout << Qi;
+    std::cout << '\n';
+ 
+    // F (Final states) ------------------------------------------------------------------
+    std::string s;
+    std::string final_states;
     std::vector<std::string> F;
 
-    std::cout << "\nSelecciona los estados finales (solo #'s y termina con 'x')\n[ ";
-    for (const std::string &e : Q) {
-        std::cout << e << ' ';
-    }
-    std::cout << "]\n>>> ";
+    std::getline(file, final_states);
 
-    while (std::cin >> final) {
-        if (final != "x") {
-            int index = std::stoi(final);
-            F.push_back(Q[index]);
-        } else {
-            break;
-        }
-        
-        std::cout << ">>> ";
+    std::istringstream fstates(final_states);
+    
+    while ( fstates >> s ) {
+        int index = std::stoi(s);
+        F.push_back(Q[index]);
     }
+    
+    std::cout << GREEN << "\n[Final states]\n" << RESET; 
+    for(const std::string &s : F) std::cout << s << ' ';
+    std::cout << '\n';
+     
+    // Testing words --------------------------------------------
 
-    for (const char &c : E) std::cout << c << ' ';
- 
-    // Comprobando palabras --------------------------------------------
-    bool flag = true;
+    std::string num_words;
     std::string Qa;
     std::string word;
- 
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    std::cout << '\n';
 
-    while (1) {
+    std::getline(file, num_words);
+    
+    std::cout << GREEN << "\n[Testing words]\n" << RESET; 
+    for(int i = 0; i < std::stoi(num_words); i++) {
         Qa = Qi;
 
-        std::cout << "\nIntroduce la palabra a probar ('q' para terminar)\n>>> ";
-        std::getline(std::cin, word);
+        std::getline(file, word);
+        std::cout << word << ' ';
 
-        if (word == "q") { std::cout << "Bye :D"; getchar(); break; }
+        if ( word == "q" ) { break; }
 
-        for (const char &c : word) {
-            flag = std::binary_search(E.begin(), E.end(), c);
-            if (flag) {
-                int row = (int)Qa[1] - '0';
-                int col = (int)c - '0';
+        for ( const char &c : word ) {
+            auto it = std::find(E.begin(), E.end(), c);
+            if( it != E.end() ) {
+                int row = Qa[1] - '0';
+                int col = std::distance(E.begin(), it);
                 
-                if (AFD[row][col] != "V") {
+                if ( AFD[row][col] != "V" ) {
                     Qa = AFD[row][col];
                 } else {
                     Qa = "V";
@@ -123,14 +154,17 @@ int afd()
             }
         }
         
-        flag = std::binary_search(F.begin(), F.end(), Qa);
+        auto it = std::find(F.begin(), F.end(), Qa);
         
-        if (flag) {
+        if( it != F.end() ) {
             std::cout << GREEN << "SI" << RESET << '\n';
         } else {
             std::cout << RED << "NO" << RESET << '\n';
         }
+
     }
- 
+
+    file.close(); 
+    getchar();
     return 0;
 }
