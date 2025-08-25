@@ -16,7 +16,7 @@
 int afd()
 {   
     std::string line;
-    std::ifstream file("./test/afd_test001");
+    std::ifstream file("./test/afd/afd_test001");
     
     // Q (States) -----------------------------------------------
     std::string num_states;
@@ -121,10 +121,11 @@ int afd()
     std::cout << '\n';
      
     // Testing words --------------------------------------------
-
+    bool flag;
     std::string num_words;
     std::string Qa;
     std::string word;
+    std::vector<std::string> process;
 
     std::getline(file, num_words);
     
@@ -138,30 +139,41 @@ int afd()
         if ( word == "q" ) { break; }
 
         for ( const char &c : word ) {
+            process.push_back(Qa);
             auto it = std::find(E.begin(), E.end(), c);
             if( it != E.end() ) {
-                int row = Qa[1] - '0';
+                int row = std::stoi(Qa.substr(1));
                 int col = std::distance(E.begin(), it);
                 
                 if ( AFD[row][col] != "V" ) {
                     Qa = AFD[row][col];
                 } else {
                     Qa = "V";
+                    process.push_back(Qa);
                     break;
                 }
             } else {
                 Qa = "V";
+                process.push_back(Qa);
+                break;
             }
+            
         }
+
+        flag = std::find(F.begin(), F.end(), Qa) != F.end();
         
-        auto it = std::find(F.begin(), F.end(), Qa);
-        
-        if( it != F.end() ) {
+        if( flag ) {
             std::cout << GREEN << "SI" << RESET << '\n';
         } else {
             std::cout << RED << "NO" << RESET << '\n';
         }
+        
+        std::cout << "[";
+        for(const std::string &p : process) {
+            std::cout << " -> " << p;
+        } std::cout << "]\n";
 
+        process.clear();
     }
 
     file.close(); 
