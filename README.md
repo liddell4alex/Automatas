@@ -1,3 +1,3 @@
 # Automatas Finitos
 
-<img href="https://imgur.com/a/i6GNez2">
+<img src="https://imgur.com/a/i6GNez2">
